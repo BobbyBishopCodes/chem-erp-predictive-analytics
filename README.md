@@ -1,6 +1,6 @@
 # Chemical Manufacturing ERP Financial Forecasting & AI Analytics
 
-Created by **Robert Bishop**, Accountancy & Finance · **Riley Murray**, Mathematics & Economics at ETSU
+Created by **Robert Bishop**, Accountancy & Finance · **Riley Murray**, Mathematics & Financial Economics at ETSU
 
 We built a financial forecasting and reporting project for a fictional chemical manufacturer, using three years of synthetic SAP S/4HANA-style data.
 
