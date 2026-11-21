@@ -1,0 +1,44 @@
+relationship 'Production to Calendar'
+	fromColumn: Production.Month
+	toColumn: Calendar.Month
+
+relationship 'Production to Operating Scope'
+	fromColumn: Production.'Product ID'
+	toColumn: 'Operating Scope'.'Product ID'
+
+relationship 'Sales to Calendar'
+	fromColumn: Sales.Month
+	toColumn: Calendar.Month
+
+relationship 'Sales to Operating Scope'
+	fromColumn: Sales.'Product ID'
+	toColumn: 'Operating Scope'.'Product ID'
+
+relationship 'Finished Inventory to Calendar'
+	fromColumn: 'Finished Inventory'.Month
+	toColumn: Calendar.Month
+
+relationship 'Finished Inventory to Operating Scope'
+	fromColumn: 'Finished Inventory'.'Product ID'
+	toColumn: 'Operating Scope'.'Product ID'
+
+relationship 'Raw Inventory to Calendar'
+	fromColumn: 'Raw Inventory'.Month
+	toColumn: Calendar.Month
+
+relationship 'Production Forecast to Operating Scope'
+	fromColumn: 'Production Forecast'.'Product ID'
+	toColumn: 'Operating Scope'.'Product ID'
+
+relationship 'Production Forecast to Horizon'
+	fromColumn: 'Production Forecast'.Days
+	toColumn: Horizon.Days
+
+relationship 'Production Backtest to Operating Scope'
+	fromColumn: 'Production Backtest'.'Product ID'
+	toColumn: 'Operating Scope'.'Product ID'
+
+relationship 'Production Backtest to Horizon'
+	fromColumn: 'Production Backtest'.Days
+	toColumn: Horizon.Days
+

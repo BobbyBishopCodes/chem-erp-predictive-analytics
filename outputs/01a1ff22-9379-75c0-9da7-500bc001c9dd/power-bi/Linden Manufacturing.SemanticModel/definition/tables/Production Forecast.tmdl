@@ -1,0 +1,49 @@
+table 'Production Forecast'
+	lineageTag: d66bfe00-c02c-4625-a907-336b2507ce08
+
+	measure 'XGBoost forecast' = DIVIDE(SUM('Production Forecast'[Forecast cents]), 100)
+		formatString: $#,0;($#,0);$0
+		lineageTag: 282d11d6-48d6-48e0-9ccb-075f6c8f7573
+
+	measure 'Preceding actual' = DIVIDE(SUM('Production Forecast'[Prior cost cents]), 100)
+		formatString: $#,0;($#,0);$0
+		lineageTag: 1a446c01-c43e-42c4-b38f-7d0dc1566497
+
+	column 'Product ID'
+		dataType: string
+		isHidden
+		lineageTag: 07dfec93-a0dc-43a5-bf59-bef966daa705
+		summarizeBy: none
+		sourceColumn: Product ID
+
+	column Days
+		dataType: int64
+		isHidden
+		lineageTag: 14bab852-7f2c-4857-8fbe-864706c9485a
+		summarizeBy: none
+		sourceColumn: Days
+
+	column 'Forecast cents'
+		dataType: int64
+		isHidden
+		lineageTag: bdc2457a-024a-4d73-9ecb-a505fef5924e
+		summarizeBy: none
+		sourceColumn: Forecast cents
+
+	column 'Prior cost cents'
+		dataType: int64
+		isHidden
+		lineageTag: 8f129d55-2cd4-43ac-889c-86f8dc846a17
+		summarizeBy: none
+		sourceColumn: Prior cost cents
+
+	partition 'Production Forecast' = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1siRkctMTAwIiwzMCw5NjU3ODM0LDg4MjI1NDBdLFsiRkctMTAwIiw2MCwxODQ5NjExNCwxNzM0MzE5OF0sWyJGRy0xMDAiLDkwLDMwNDAzOTg0LDI2Mzc2NzYzXSxbIkZHLTIwMCIsMzAsODg5NTY2OCw4MDcwNTM4XSxbIkZHLTIwMCIsNjAsMTY1NDA4MTMsMTU1NTIwMDVdLFsiRkctMjAwIiw5MCwyNzk4MzUzMCwyMzQ4MzI4NV1d", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Product ID", "Days", "Forecast cents", "Prior cost cents"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Product ID", type text}, {"Days", Int64.Type}, {"Forecast cents", Int64.Type}, {"Prior cost cents", Int64.Type}}, "en-US")
+				in
+				    Typed
+

@@ -1,0 +1,26 @@
+table Horizon
+	lineageTag: 52011f0d-fd9e-40cf-a2a3-ec82d4be42d8
+
+	column Days
+		dataType: int64
+		lineageTag: 2e57d061-2e51-4757-b89f-62030fba6172
+		summarizeBy: none
+		sourceColumn: Days
+
+	column Window
+		dataType: string
+		lineageTag: 5c803c86-8aaa-47b2-833d-9110eccda884
+		summarizeBy: none
+		sourceColumn: Window
+		sortByColumn: Days
+
+	partition Horizon = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1szMCwiMzAgZGF5cyJdLFs2MCwiNjAgZGF5cyJdLFs5MCwiOTAgZGF5cyJdXQ==", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Days", "Window"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Days", Int64.Type}, {"Window", type text}}, "en-US")
+				in
+				    Typed
+

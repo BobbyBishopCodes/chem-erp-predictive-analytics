@@ -1,0 +1,74 @@
+table 'Production Backtest'
+	lineageTag: a934d97f-e8bc-437c-9559-33286abbf3fd
+
+	measure XGBoost = DIVIDE(SUM('Production Backtest'[XGBoost error cents]), SUM('Production Backtest'[Actual magnitude cents]))
+		formatString: 0.0%
+		lineageTag: da9476e7-a361-4797-abe9-d7155f4f7f24
+
+	measure 'Recent baseline' = DIVIDE(SUM('Production Backtest'[Recent error cents]), SUM('Production Backtest'[Actual magnitude cents]))
+		formatString: 0.0%
+		lineageTag: e4ba445d-9d6b-4d02-a086-8b3b651ebf5a
+
+	measure 'Seasonal baseline' = DIVIDE(SUM('Production Backtest'[Seasonal error cents]), SUM('Production Backtest'[Actual magnitude cents]))
+		formatString: 0.0%
+		lineageTag: bac0014e-1605-42c6-9b1d-f6f4c80fa25c
+
+	column 'Product ID'
+		dataType: string
+		isHidden
+		lineageTag: 75cd8cf2-3153-40fb-8045-2bfd32cc4272
+		summarizeBy: none
+		sourceColumn: Product ID
+
+	column Days
+		dataType: int64
+		isHidden
+		lineageTag: d7fce53f-5f78-434a-a4ea-37c75fab4649
+		summarizeBy: none
+		sourceColumn: Days
+
+	column 'Actual magnitude cents'
+		dataType: int64
+		isHidden
+		lineageTag: db078b28-5d93-480d-9c8c-c0b471865940
+		summarizeBy: none
+		sourceColumn: Actual magnitude cents
+
+	column 'XGBoost error cents'
+		dataType: int64
+		isHidden
+		lineageTag: 0ede9604-0050-4970-acdb-a22d49c8779c
+		summarizeBy: none
+		sourceColumn: XGBoost error cents
+
+	column 'Recent error cents'
+		dataType: int64
+		isHidden
+		lineageTag: 7a6bfae9-3505-4831-b80d-0d6f197784f9
+		summarizeBy: none
+		sourceColumn: Recent error cents
+
+	column 'Seasonal error cents'
+		dataType: int64
+		isHidden
+		lineageTag: 7b8c361e-e9a7-431e-acf1-4bc04c8f60aa
+		summarizeBy: none
+		sourceColumn: Seasonal error cents
+
+	column Windows
+		dataType: int64
+		isHidden
+		lineageTag: b6bc0e70-a740-469a-ac68-b61c2812e7eb
+		summarizeBy: none
+		sourceColumn: Windows
+
+	partition 'Production Backtest' = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1siRkctMTAwIiwzMCwyNDk2ODIwMDMsODg3Mjk2OSwxOTE1MzEwOCwxODEyNjYyOCwyNF0sWyJGRy0xMDAiLDYwLDQ4MjU1NTM3MiwyMTg1MDI4MSw2MTAyODI1NCwzNDE3NzU4NywyM10sWyJGRy0xMDAiLDkwLDY5NzI1MTYyMCw1NjcyNzc3MCwxMTc0NjgzMjMsNDkxOTA0MjgsMjJdLFsiRkctMjAwIiwzMCwyMjM1NDg4MzYsMTEwODQ0ODIsMjAwNjEyMzgsMTk0NjMwMzksMjRdLFsiRkctMjAwIiw2MCw0MzE3MzUzNDcsMjM4NjExMzMsNTkxNDYzNDIsMzcwNDA4MjEsMjNdLFsiRkctMjAwIiw5MCw2MjM4MDcxOTgsNTMxNjQxNzgsMTEyMzQ4NDcwLDUzNzM1ODkyLDIyXV0=", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Product ID", "Days", "Actual magnitude cents", "XGBoost error cents", "Recent error cents", "Seasonal error cents", "Windows"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Product ID", type text}, {"Days", Int64.Type}, {"Actual magnitude cents", Int64.Type}, {"XGBoost error cents", Int64.Type}, {"Recent error cents", Int64.Type}, {"Seasonal error cents", Int64.Type}, {"Windows", Int64.Type}}, "en-US")
+				in
+				    Typed
+

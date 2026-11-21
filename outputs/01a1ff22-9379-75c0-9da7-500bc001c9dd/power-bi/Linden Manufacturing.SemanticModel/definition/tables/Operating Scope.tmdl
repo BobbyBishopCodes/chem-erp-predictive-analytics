@@ -1,0 +1,32 @@
+table 'Operating Scope'
+	lineageTag: 8d885e2b-3299-4455-8a31-2bba87985b6f
+
+	column 'Product ID'
+		dataType: string
+		isHidden
+		lineageTag: 24470ddf-a32a-4c0f-b1fa-40e79f2f37cf
+		summarizeBy: none
+		sourceColumn: Product ID
+
+	column Product
+		dataType: string
+		lineageTag: 872595d7-9ec9-4802-b3ad-c63b9812f0b6
+		summarizeBy: none
+		sourceColumn: Product
+
+	column 'Cost center'
+		dataType: string
+		lineageTag: edc086f4-08b2-4b0e-a980-17caf28ee462
+		summarizeBy: none
+		sourceColumn: Cost center
+
+	partition 'Operating Scope' = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1siRkctMTAwIiwiSW5kdXN0cmlhbCBjb2F0aW5nIGJhc2UiLCJDQy0xMTAiXSxbIkZHLTIwMCIsIlByb3RlY3RpdmUgY29hdGluZyBiYXNlIiwiQ0MtMTIwIl1d", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Product ID", "Product", "Cost center"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Product ID", type text}, {"Product", type text}, {"Cost center", type text}}, "en-US")
+				in
+				    Typed
+

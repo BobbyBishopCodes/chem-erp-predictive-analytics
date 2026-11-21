@@ -2,3 +2,4 @@ __pycache__/
 /data/generated/
 /data/forecasts/
 /data/risk/
+/data/postgres.env

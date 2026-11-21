@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Linden Manufacturing"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "72e8a31a-c956-4bbf-9415-8b9c470bccbd"
+  }
+}

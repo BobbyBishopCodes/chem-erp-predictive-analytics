@@ -1,0 +1,19 @@
+table Calendar
+	lineageTag: b341da32-5b7f-49a5-b612-6a6030f58adb
+
+	column Month
+		dataType: string
+		lineageTag: da7f8ad1-36b4-48d7-b49e-fcc938918831
+		summarizeBy: none
+		sourceColumn: Month
+
+	partition Calendar = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1siMjAyMy0wMSJdLFsiMjAyMy0wMiJdLFsiMjAyMy0wMyJdLFsiMjAyMy0wNCJdLFsiMjAyMy0wNSJdLFsiMjAyMy0wNiJdLFsiMjAyMy0wNyJdLFsiMjAyMy0wOCJdLFsiMjAyMy0wOSJdLFsiMjAyMy0xMCJdLFsiMjAyMy0xMSJdLFsiMjAyMy0xMiJdLFsiMjAyNC0wMSJdLFsiMjAyNC0wMiJdLFsiMjAyNC0wMyJdLFsiMjAyNC0wNCJdLFsiMjAyNC0wNSJdLFsiMjAyNC0wNiJdLFsiMjAyNC0wNyJdLFsiMjAyNC0wOCJdLFsiMjAyNC0wOSJdLFsiMjAyNC0xMCJdLFsiMjAyNC0xMSJdLFsiMjAyNC0xMiJdLFsiMjAyNS0wMSJdLFsiMjAyNS0wMiJdLFsiMjAyNS0wMyJdLFsiMjAyNS0wNCJdLFsiMjAyNS0wNSJdLFsiMjAyNS0wNiJdLFsiMjAyNS0wNyJdLFsiMjAyNS0wOCJdLFsiMjAyNS0wOSJdLFsiMjAyNS0xMCJdLFsiMjAyNS0xMSJdLFsiMjAyNS0xMiJdXQ==", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Month"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Month", type text}}, "en-US")
+				in
+				    Typed
+

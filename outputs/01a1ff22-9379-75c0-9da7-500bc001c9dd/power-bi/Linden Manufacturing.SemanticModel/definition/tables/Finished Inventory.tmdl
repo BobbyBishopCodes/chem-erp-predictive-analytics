@@ -1,0 +1,42 @@
+table 'Finished Inventory'
+	lineageTag: 459fd356-c472-47ae-95d0-4caf1c809e83
+
+	measure 'Finished goods' = DIVIDE(SUM('Finished Inventory'[Value cents]), 100)
+		formatString: $#,0;($#,0);$0
+		lineageTag: 6c482efc-3f8a-40dd-8720-266ae5ab7d23
+
+	measure 'Ending finished inventory' = CALCULATE([Finished goods], 'Calendar'[Month] = MAX('Calendar'[Month]))
+		formatString: $#,0;($#,0);$0
+		lineageTag: d31832ad-fff2-4010-b743-87bc90d15c20
+
+	column Month
+		dataType: string
+		isHidden
+		lineageTag: 6e46b0bd-c163-43c4-a66d-62617a59091e
+		summarizeBy: none
+		sourceColumn: Month
+
+	column 'Product ID'
+		dataType: string
+		isHidden
+		lineageTag: b304230e-4943-49cc-9b5d-d6203a42d8b4
+		summarizeBy: none
+		sourceColumn: Product ID
+
+	column 'Value cents'
+		dataType: int64
+		isHidden
+		lineageTag: 8d62c63a-e348-42c9-b592-694cf7608c8f
+		summarizeBy: none
+		sourceColumn: Value cents
+
+	partition 'Finished Inventory' = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1siMjAyMy0wMSIsIkZHLTEwMCIsMF0sWyIyMDIzLTAxIiwiRkctMjAwIiw1OTQ5N10sWyIyMDIzLTAyIiwiRkctMTAwIiwxMTc4MDddLFsiMjAyMy0wMiIsIkZHLTIwMCIsMzI3MDQxXSxbIjIwMjMtMDMiLCJGRy0xMDAiLDM4Mzg5XSxbIjIwMjMtMDMiLCJGRy0yMDAiLDExMTM0Nl0sWyIyMDIzLTA0IiwiRkctMTAwIiwzMzE0MjZdLFsiMjAyMy0wNCIsIkZHLTIwMCIsMF0sWyIyMDIzLTA1IiwiRkctMTAwIiwwXSxbIjIwMjMtMDUiLCJGRy0yMDAiLDBdLFsiMjAyMy0wNiIsIkZHLTEwMCIsMjUwODNdLFsiMjAyMy0wNiIsIkZHLTIwMCIsMTMxNDQwXSxbIjIwMjMtMDciLCJGRy0xMDAiLDI3NjE3XSxbIjIwMjMtMDciLCJGRy0yMDAiLDk2Njk2XSxbIjIwMjMtMDgiLCJGRy0xMDAiLDc4Nzg5XSxbIjIwMjMtMDgiLCJGRy0yMDAiLDBdLFsiMjAyMy0wOSIsIkZHLTEwMCIsMF0sWyIyMDIzLTA5IiwiRkctMjAwIiwyMDg3NDVdLFsiMjAyMy0xMCIsIkZHLTEwMCIsODgxNjddLFsiMjAyMy0xMCIsIkZHLTIwMCIsMF0sWyIyMDIzLTExIiwiRkctMTAwIiw2MjE2NTBdLFsiMjAyMy0xMSIsIkZHLTIwMCIsMTUwOTEwXSxbIjIwMjMtMTIiLCJGRy0xMDAiLDIxNzM5Ml0sWyIyMDIzLTEyIiwiRkctMjAwIiw4Mzc5OF0sWyIyMDI0LTAxIiwiRkctMTAwIiwwXSxbIjIwMjQtMDEiLCJGRy0yMDAiLDE5MDg2M10sWyIyMDI0LTAyIiwiRkctMTAwIiwxMzM3MzddLFsiMjAyNC0wMiIsIkZHLTIwMCIsMTczNl0sWyIyMDI0LTAzIiwiRkctMTAwIiw0NzQxNF0sWyIyMDI0LTAzIiwiRkctMjAwIiwyNTM4NjNdLFsiMjAyNC0wNCIsIkZHLTEwMCIsMTI4NDIzXSxbIjIwMjQtMDQiLCJGRy0yMDAiLDE1NzI1OF0sWyIyMDI0LTA1IiwiRkctMTAwIiwxMTAxNDVdLFsiMjAyNC0wNSIsIkZHLTIwMCIsMF0sWyIyMDI0LTA2IiwiRkctMTAwIiwxMjczOTNdLFsiMjAyNC0wNiIsIkZHLTIwMCIsMjQ3NTc1XSxbIjIwMjQtMDciLCJGRy0xMDAiLDBdLFsiMjAyNC0wNyIsIkZHLTIwMCIsMTcxMTg3XSxbIjIwMjQtMDgiLCJGRy0xMDAiLDMyMzU5XSxbIjIwMjQtMDgiLCJGRy0yMDAiLDM5MDk1NF0sWyIyMDI0LTA5IiwiRkctMTAwIiwxOTAxNDVdLFsiMjAyNC0wOSIsIkZHLTIwMCIsNjAyODJdLFsiMjAyNC0xMCIsIkZHLTEwMCIsMzI5MDI0XSxbIjIwMjQtMTAiLCJGRy0yMDAiLDU0MjI3OF0sWyIyMDI0LTExIiwiRkctMTAwIiwwXSxbIjIwMjQtMTEiLCJGRy0yMDAiLDUwMzc0Ml0sWyIyMDI0LTEyIiwiRkctMTAwIiwxNTUwNzhdLFsiMjAyNC0xMiIsIkZHLTIwMCIsMjI0Mjc0XSxbIjIwMjUtMDEiLCJGRy0xMDAiLDYxMjM2XSxbIjIwMjUtMDEiLCJGRy0yMDAiLDE5MzE4XSxbIjIwMjUtMDIiLCJGRy0xMDAiLDMzNjYzMF0sWyIyMDI1LTAyIiwiRkctMjAwIiwzMjg2OTBdLFsiMjAyNS0wMyIsIkZHLTEwMCIsODMxOTExXSxbIjIwMjUtMDMiLCJGRy0yMDAiLDBdLFsiMjAyNS0wNCIsIkZHLTEwMCIsNzUzNzRdLFsiMjAyNS0wNCIsIkZHLTIwMCIsNDUyNjU4XSxbIjIwMjUtMDUiLCJGRy0xMDAiLDU4OTcyXSxbIjIwMjUtMDUiLCJGRy0yMDAiLDMwNDQ4N10sWyIyMDI1LTA2IiwiRkctMTAwIiw2OTM3XSxbIjIwMjUtMDYiLCJGRy0yMDAiLDM3MDIxMF0sWyIyMDI1LTA3IiwiRkctMTAwIiwwXSxbIjIwMjUtMDciLCJGRy0yMDAiLDQ2NTAyMV0sWyIyMDI1LTA4IiwiRkctMTAwIiwxODY2ODZdLFsiMjAyNS0wOCIsIkZHLTIwMCIsMF0sWyIyMDI1LTA5IiwiRkctMTAwIiw3NjMwM10sWyIyMDI1LTA5IiwiRkctMjAwIiwyOTc4OTBdLFsiMjAyNS0xMCIsIkZHLTEwMCIsMjMzMzQ3XSxbIjIwMjUtMTAiLCJGRy0yMDAiLDBdLFsiMjAyNS0xMSIsIkZHLTEwMCIsNDczMDkwXSxbIjIwMjUtMTEiLCJGRy0yMDAiLDIxOTE2MV0sWyIyMDI1LTEyIiwiRkctMTAwIiwxNDQ0MzddLFsiMjAyNS0xMiIsIkZHLTIwMCIsMzczMTY4XV0=", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Month", "Product ID", "Value cents"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Month", type text}, {"Product ID", type text}, {"Value cents", Int64.Type}}, "en-US")
+				in
+				    Typed
+

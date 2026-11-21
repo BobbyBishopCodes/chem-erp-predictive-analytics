@@ -1,0 +1,31 @@
+table 'Raw Inventory'
+	lineageTag: 16c6bad1-d11f-45ae-bbfa-e873c5e52776
+
+	measure 'Raw materials (company)' = DIVIDE(SUM('Raw Inventory'[Value cents]), 100)
+		formatString: $#,0;($#,0);$0
+		lineageTag: 785d614a-1605-4ee5-b9ba-31ba5d726b71
+
+	column Month
+		dataType: string
+		isHidden
+		lineageTag: 13e0109b-e055-41e5-a129-243dbb3870d5
+		summarizeBy: none
+		sourceColumn: Month
+
+	column 'Value cents'
+		dataType: int64
+		isHidden
+		lineageTag: 8b796351-fe6a-483b-8534-edc33893952b
+		summarizeBy: none
+		sourceColumn: Value cents
+
+	partition 'Raw Inventory' = m
+		mode: import
+		source =
+				let
+				    Rows = Json.Document(Binary.FromText("W1siMjAyMy0wMSIsNDU2NDAwNV0sWyIyMDIzLTAyIiw0OTQ0ODQzXSxbIjIwMjMtMDMiLDM0OTUzMzRdLFsiMjAyMy0wNCIsNTMyNjk5N10sWyIyMDIzLTA1Iiw1Nzk1NDc1XSxbIjIwMjMtMDYiLDc5MTc5MTVdLFsiMjAyMy0wNyIsNTI4NzMyMV0sWyIyMDIzLTA4Iiw2NTM3MTM0XSxbIjIwMjMtMDkiLDYzNDY0NTBdLFsiMjAyMy0xMCIsNDcxODI0OF0sWyIyMDIzLTExIiw0MjM4NTA1XSxbIjIwMjMtMTIiLDQxNjk2MjldLFsiMjAyNC0wMSIsNDI1NDc4M10sWyIyMDI0LTAyIiw0MDI3MTIyXSxbIjIwMjQtMDMiLDc1NDE3NjFdLFsiMjAyNC0wNCIsNzE3NjU3M10sWyIyMDI0LTA1Iiw5NTk4NDM0XSxbIjIwMjQtMDYiLDk1OTk0ODRdLFsiMjAyNC0wNyIsNjk3MjUzMV0sWyIyMDI0LTA4Iiw2Mjk1NDI0XSxbIjIwMjQtMDkiLDYxNTM1MDFdLFsiMjAyNC0xMCIsNTMxMzA4OV0sWyIyMDI0LTExIiwzNDA3NzU2XSxbIjIwMjQtMTIiLDQ1MzE5MzhdLFsiMjAyNS0wMSIsNDczNTY2Ml0sWyIyMDI1LTAyIiwzMzYxMzcyXSxbIjIwMjUtMDMiLDY0MzQ1MzhdLFsiMjAyNS0wNCIsNTQ1NTIxM10sWyIyMDI1LTA1Iiw3ODkzOTQ1XSxbIjIwMjUtMDYiLDM2NTE1MTJdLFsiMjAyNS0wNyIsNTE2OTE5Ml0sWyIyMDI1LTA4Iiw2Njc5ODM1XSxbIjIwMjUtMDkiLDU1NzAxNjFdLFsiMjAyNS0xMCIsNDQ2MDE0N10sWyIyMDI1LTExIiw1NDM0NDQ2XSxbIjIwMjUtMTIiLDQyMTM2MDRdXQ==", BinaryEncoding.Base64)),
+				    Source = Table.FromRows(Rows, {"Month", "Value cents"}),
+				    Typed = Table.TransformColumnTypes(Source, {{"Month", type text}, {"Value cents", Int64.Type}}, "en-US")
+				in
+				    Typed
+
