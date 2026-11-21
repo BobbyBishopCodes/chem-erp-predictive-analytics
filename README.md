@@ -57,7 +57,7 @@ The workbook shows actual material, labor, and overhead costs alongside the budg
 
 ## Linden Financial Assistant
 
-The [Linden Financial Assistant](financial_assistant.py) is a command-line tool for asking about costs, budgets, forecasts, and risk flags. It runs **Qwen2.5-3B-Instruct** locally through llama.cpp using the **Q4_K_M GGUF** model file. No API key is required. [Qwen model card](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF)
+The [Linden Financial Assistant](financial_assistant.py) is a command-line tool for asking about costs, budgets, forecasts, and risk flags. It runs **Qwen2.5-3B-Instruct** locally through llama.cpp using the **Q4_K_M GGUF** model file. [Qwen model card](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF)
 
 Qwen interprets the question. Python calculates the answer from the data and model outputs and then also cites the source files. In one test, the assistant reported a **$19,262.17** July 2024 budget overrun for cost center CC-110 and broke it down into material, labor, and overhead variances. Pretty cool stuff
 
