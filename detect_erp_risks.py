@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
+from erp_artifact_sources import write_manifest
 from validate_erp import validate
 
 PURCHASE_LOOKBACK_DAYS = 120
@@ -271,6 +272,7 @@ def run(directory, requested_cutoff, output):
         staging.mkdir()
         for name, table in tables.items():
             table.to_csv(staging / f"{name}.csv", index=False, float_format="%.6f")
+        write_manifest(staging, directory, cutoff.date())
         staging.rename(output)
     print(f"Saved {len(tables)} risk tables through {cutoff.date()} to {output.resolve()}")
     for name in ("purchase_anomalies", "production_variances", "batch_efficiency"):

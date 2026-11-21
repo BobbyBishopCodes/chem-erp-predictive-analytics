@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
 
+from erp_artifact_sources import write_manifest
 from validate_erp import validate
 
 HORIZONS = (30, 60, 90)
@@ -249,6 +250,7 @@ def run(directory, cutoff, output):
         historical.to_csv(staging / "backtest_predictions.csv", index=False)
         metrics(historical).to_csv(staging / "model_metrics.csv",
                                    index=False, float_format="%.6f")
+        write_manifest(staging, directory, cutoff.date())
         staging.rename(output)
     print(
         f"Saved {len(forecasts)} forecasts and {len(backtests)} backtest predictions to {output.resolve()}")
